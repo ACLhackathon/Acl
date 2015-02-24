@@ -102,13 +102,49 @@ public class AclEntity {
 	public void setAccess(boolean access) {
 		this.access = access;
 	}
-//	public boolean isInIpAddressRange(String str){
-//		if (str.contains('/')) {
-//			
-//		}
-//		
-//		
-//	}
+	public boolean isInIpAddressRange(String str,String des){
+		String [] ips=str.split("/");
+		if (ips==null) {
+			return false;
+		}
+		else{
+			if (ips.length<2) {
+				return ips[0].equals(des);
+			}
+			else {
+				String subnet=ips[1];
+				int num=Integer.getInteger(subnet);
+				if (num==32) {
+					return ips[0].equals(des);
+				}
+				if (num==24) {
+					String [] subips=ips[0].split(".");
+					String [] desips=des.split(".");
+					for (int i = 0; i < desips.length-1; i++) {
+						if (!desips[i].equals(subips[i])) {
+							return false;
+						}
+					}
+				}
+				if (num==25) {
+					String [] subips=ips[0].split(".");
+					String [] desips=des.split(".");
+					for (int i = 0; i < desips.length-1; i++) {
+						if (!desips[i].equals(subips[i])) {
+							return false;
+						}
+					}
+					int subipnum=Integer.getInteger(desips[0]);
+					if (subipnum<=127) {
+						return true;
+					}
+				}
+				return false;
+			}
+		}
+		
+		
+	}
 	
 
 }

@@ -45,7 +45,7 @@ public class Acl {
 	}
 	public String Acl_check_packet(String ACLNAME, String SRC_IP,String DST_IP,String PROTO,String SRC_PORT,String DST_PORT){
 		List<AclEntity> entities=hashtable.get(ACLNAME);
-		if (access) {
+		if () {
 			
 		}
 	}
