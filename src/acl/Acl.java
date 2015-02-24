@@ -16,6 +16,8 @@ public class Acl {
 	}
 	private Acl() {
 		// TODO Auto-generated constructor stub
+		hashtable=new Hashtable<>();
+		access=true;
 	}
 	
 	public boolean Acl_list_create(String name,String action){
