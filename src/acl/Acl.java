@@ -16,7 +16,7 @@ public class Acl {
 	}
 	private Acl() {
 		// TODO Auto-generated constructor stub
-		hashtable=new Hashtable<>();
+		hashtable=new Hashtable<String,List<AclEntity>>();
 		access=true;
 	}
 	
@@ -43,8 +43,11 @@ public class Acl {
 			return true;
 		}
 	}
-	public void Acl_check_packet(String ACLNAME, String SRC_IP,String DST_IP,String PROTO,String SRC_PORT,String DST_PORT){
-		
+	public String Acl_check_packet(String ACLNAME, String SRC_IP,String DST_IP,String PROTO,String SRC_PORT,String DST_PORT){
+		List<AclEntity> entities=hashtable.get(ACLNAME);
+		if (access) {
+			
+		}
 	}
 	public void Acl_del_rule(String ACLNAME,String PRIO){
 		
