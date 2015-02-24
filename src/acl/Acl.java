@@ -7,11 +7,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 public class Acl {
 	private static final byte[] FileOutputStream = null;
 	private static Acl instanceAcl;
-	private Hashtable<String, List<AclEntity>> hashtable;
+	private Map<String, List<AclEntity>> hashtable;
 	private boolean access;
 	public static Acl getInstance(){
 		if (instanceAcl==null) {
@@ -38,7 +39,9 @@ public class Acl {
 	
 	public boolean Acl_add_rule(String ACLNAME,String SRC_IP_PREFIX, String DST_IP_PREFIX, 
 			String PROTO,String SRC_PORT,String DST_PORT,String PRIORITY,String ACTION){
-		if (!hashtable.contains(ACLNAME)) {
+		System.out.println("!!!!!!!!!!!!!!!");
+		System.out.println(ACLNAME);
+		if (!hashtable.containsKey(ACLNAME)) {
 			return false;
 		}
 		else{
@@ -55,7 +58,7 @@ public class Acl {
 //		}
 //	}
 	public void Acl_del_rule(String ACLNAME,String PRIO){
-		if (hashtable.contains(ACLNAME)) {
+		if (hashtable.containsKey(ACLNAME)) {
 			List<AclEntity> entities = hashtable.get(ACLNAME);
 			for (AclEntity entity: entities) {
 				if (entity.getPriority() == PRIO) {
@@ -65,11 +68,12 @@ public class Acl {
 		}
 	}
 	public void Acl_list_delete(String NAME){
-		if(hashtable.contains(NAME)) {
+		if(hashtable.containsKey(NAME)) {
 			hashtable.remove(NAME);
 		}
 	}
 	public void Acl_show_rules(String ACLNAME,String FILENAME) throws IOException{
+		
 		List<AclEntity> entities = hashtable.get(FILENAME);
 		for (AclEntity entity: entities) {
 			String str = entity.getAclName() + ", " + entity.getSrc_ip() + "," + entity.getDst_ip()
@@ -84,6 +88,7 @@ public class Acl {
 	}
 	public void Acl_show_all (String FILENAME){
 		List<AclEntity> entities = hashtable.get(FILENAME);
+		
 		print(entities);
 	}
 	public void print(List<AclEntity> entities) {
