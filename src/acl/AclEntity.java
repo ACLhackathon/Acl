@@ -9,6 +9,7 @@ public class AclEntity {
 	private String dst_port;
 	private String priority;
 	private String action;
+	private boolean access;
 
 	public AclEntity(String aclName, String src_ip, String dst_ip,
 			String protoco, String src_port, String dst_port, String priority,
@@ -21,6 +22,13 @@ public class AclEntity {
 		this.src_port=src_port;
 		this.dst_port=dst_port;
 		this.priority=priority;
+		this.action=action;
+		if (action.equals("ALLOW")) {
+			access=true;
+		}
+		else {
+			access=false;
+		}
 	}
 
 	public String getAclName() {
@@ -86,5 +94,21 @@ public class AclEntity {
 	public void setAction(String action) {
 		this.action = action;
 	}
+
+	public boolean isAccess() {
+		return access;
+	}
+
+	public void setAccess(boolean access) {
+		this.access = access;
+	}
+//	public boolean isInIpAddressRange(String str){
+//		if (str.contains('/')) {
+//			
+//		}
+//		
+//		
+//	}
+	
 
 }

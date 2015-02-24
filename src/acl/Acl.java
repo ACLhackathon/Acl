@@ -1,10 +1,15 @@
 package acl;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
 public class Acl {
+	private static final byte[] FileOutputStream = null;
 	private static Acl instanceAcl;
 	private Hashtable<String, List<AclEntity>> hashtable;
 	private boolean access;
@@ -16,7 +21,7 @@ public class Acl {
 	}
 	private Acl() {
 		// TODO Auto-generated constructor stub
-		hashtable=new Hashtable<>();
+		hashtable=new Hashtable<String,List<AclEntity>>();
 		access=true;
 	}
 	
@@ -43,29 +48,50 @@ public class Acl {
 			return true;
 		}
 	}
-	public void Acl_check_packet(String ACLNAME, String SRC_IP,String DST_IP,String PROTO,String SRC_PORT,String DST_PORT){
-		
-	}
+//	public String Acl_check_packet(String ACLNAME, String SRC_IP,String DST_IP,String PROTO,String SRC_PORT,String DST_PORT){
+//		List<AclEntity> entities=hashtable.get(ACLNAME);
+//		if (access) {
+//			
+//		}
+//	}
 	public void Acl_del_rule(String ACLNAME,String PRIO){
-		
+		if (hashtable.contains(ACLNAME)) {
+			List<AclEntity> entities = hashtable.get(ACLNAME);
+			for (AclEntity entity: entities) {
+				if (entity.getPriority() == PRIO) {
+					entities.remove(entity);
+				}
+			}
+		}
 	}
 	public void Acl_list_delete(String NAME){
 		if(hashtable.contains(NAME)) {
 			hashtable.remove(NAME);
 		}
 	}
-	public void Acl_show_rules(String ACLNAME,String FILENAME){
-		
+	public void Acl_show_rules(String ACLNAME,String FILENAME) throws IOException{
+		List<AclEntity> entities = hashtable.get(FILENAME);
+		for (AclEntity entity: entities) {
+			String str = entity.getAclName() + ", " + entity.getSrc_ip() + "," + entity.getDst_ip()
+					 + ", " + entity.getProtoco() + ", " +  entity.getSrc_port()  + ", " +  entity.getDst_port()
+						+ entity.getAction();
+			
+			File file = new File("out.txt");
+	        BufferedWriter output = new BufferedWriter(new FileWriter(file));
+	        output.write(str);
+	        output.close();
+		}
 	}
 	public void Acl_show_all (String FILENAME){
-		AclEntity entity = hashtable.get(FILENAME);
-		System.out.println("Test");
-		this.toString(entity);
+		List<AclEntity> entities = hashtable.get(FILENAME);
+		print(entities);
 	}
-	public void toString(AclEntity entity) {
+	public void print(List<AclEntity> entities) {
+		for (AclEntity entity: entities) {
 		System.out.println(entity.getAclName() + ", " + entity.getSrc_ip() + "," + entity.getDst_ip()
 				 + ", " + entity.getProtoco() + ", " +  entity.getSrc_port()  + ", " +  entity.getDst_port()
 				+ entity.getAction());
+		}
 	}
 	
 }
