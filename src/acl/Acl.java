@@ -50,13 +50,16 @@ public class Acl {
 		
 	}
 	public void Acl_list_delete(String NAME){
-		
+		if(hashtable.contains(NAME)) {
+			hashtable.remove(NAME);
+		}
 	}
 	public void Acl_show_rules(String ACLNAME,String FILENAME){
 		
 	}
 	public void Acl_show_all (String FILENAME){
-		AclEntity entity = (AclEntity) hashtable.get(FILENAME);
+		AclEntity entity = hashtable.get(FILENAME);
+		System.out.println("Test");
 		this.toString(entity);
 	}
 	public void toString(AclEntity entity) {
