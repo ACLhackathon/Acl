@@ -22,7 +22,7 @@ public class TestMain {
 		acl.Acl_add_rule("ACL_C", "3.4.5.6/32", "4.5.6.7/32", "*", "8080", "12456", "100","ALLOW");
 		
 		
-		
+		acl.Acl_show_all("ACL_A");
 	}
 
 }
