@@ -32,7 +32,7 @@ public class Acl {
 			return false;
 		} else {
 			List<AclEntity> list = new ArrayList<AclEntity>();
-			hashtable.put(name, list);
+			this.hashtable.put(name, list);
 			return true;
 		}
 	}
@@ -40,13 +40,23 @@ public class Acl {
 	public boolean Acl_add_rule(String ACLNAME, String SRC_IP_PREFIX,
 			String DST_IP_PREFIX, String PROTO, String SRC_PORT,
 			String DST_PORT, String PRIORITY, String ACTION) {
-		if (!hashtable.contains(ACLNAME)) {
+		if (!hashtable.containsKey(ACLNAME)) {
 			return false;
 		} else {
 			List<AclEntity> list = hashtable.get(ACLNAME);
 			AclEntity aclEntity = new AclEntity(ACLNAME, SRC_IP_PREFIX,
 					DST_IP_PREFIX, PROTO, SRC_PORT, DST_PORT, PRIORITY, ACTION);
+			for (AclEntity temp : list) {
+				if (temp.getAclName()==ACLNAME && temp.getProtoco()==PROTO) {
+					if (temp.getSrc_ip()==SRC_IP_PREFIX && temp.getSrc_port()==SRC_PORT
+							&& temp.getDst_ip()==DST_IP_PREFIX && temp.getDst_port()==DST_PORT) {
+						return false;
+					}
+				}
+			}
 			list.add(aclEntity);
+			
+			hashtable.put(ACLNAME, list);
 			return true;
 		}
 	}
@@ -54,11 +64,29 @@ public class Acl {
 	public String Acl_check_packet(String ACLNAME, String SRC_IP,String DST_IP,String PROTO,String SRC_PORT,String DST_PORT){
 		List<AclEntity> entities=hashtable.get(ACLNAME);
 		for (AclEntity aclEntity : entities) {
-			if (aclEntity.getDst_port().equals(DST_PORT) && aclEntity.getSrc_ip().equals(SRC_PORT) 
-					&& aclEntity.isInIpAddressRange(aclEntity.getSrc_ip(), SRC_IP)
+			if ( aclEntity.isInIpAddressRange(aclEntity.getSrc_ip(), SRC_IP)
 				  &&aclEntity.isInIpAddressRange(aclEntity.getDst_ip(), DST_IP))
 				  {
-				return aclEntity.getAction();
+				if (aclEntity.getSrc_port()=="*" && aclEntity.getDst_port()=="*") {
+					return aclEntity.getAction();
+				}
+				else if (aclEntity.getSrc_port()=="*") {
+					if (aclEntity.getDst_port().equals(DST_PORT)) {
+						return aclEntity.getAction();
+					}
+				}
+				else if (aclEntity.getDst_port()=="*") {
+					if (aclEntity.getSrc_port().equals(SRC_PORT)) {
+						return aclEntity.getAction();
+					}
+				}
+				else {
+					if (aclEntity.getSrc_port().equals(SRC_PORT)
+							&& aclEntity.getDst_port().equals(DST_PORT)) {
+						return aclEntity.getAction();
+					}
+				}
+				
 			}
 		}
 		return "false";
@@ -87,16 +115,15 @@ public class Acl {
 	}
 	public void Acl_show_rules(String ACLNAME,String FILENAME) throws IOException{
 		List<AclEntity> entities = hashtable.get(FILENAME);
+		File file = new File("out.txt");
+        BufferedWriter output = new BufferedWriter(new FileWriter(file));
 		for (AclEntity entity: entities) {
 			String str = entity.getAclName() + ", " + entity.getSrc_ip() + "," + entity.getDst_ip()
 					 + ", " + entity.getProtoco() + ", " +  entity.getSrc_port()  + ", " +  entity.getDst_port()
 						+ entity.getAction();
-			
-			File file = new File("out.txt");
-	        BufferedWriter output = new BufferedWriter(new FileWriter(file));
 	        output.write(str);
-	        output.close();
 		}
+		output.close();
 	}
 	public void Acl_show_all (String FILENAME){
 		List<AclEntity> entities = hashtable.get(FILENAME);
