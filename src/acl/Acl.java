@@ -32,7 +32,13 @@ public class Acl {
 		
 	}
 	public void Acl_show_all (String FILENAME){
-		
+		AclEntity entity = (AclEntity) hashtable.get(FILENAME);
+		this.toString(entity);
+	}
+	public void toString(AclEntity entity) {
+		System.out.println(entity.getAclName() + ", " + entity.getSrc_ip() + "," + entity.getDst_ip()
+				 + ", " + entity.getProtoco() + ", " +  entity.getSrc_port()  + ", " +  entity.getDst_port()
+				+ entity.getAction());
 	}
 	
 }
