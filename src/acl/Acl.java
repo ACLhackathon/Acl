@@ -48,21 +48,12 @@ public class Acl {
 			return true;
 		}
 	}
-<<<<<<< HEAD
 //	public String Acl_check_packet(String ACLNAME, String SRC_IP,String DST_IP,String PROTO,String SRC_PORT,String DST_PORT){
 //		List<AclEntity> entities=hashtable.get(ACLNAME);
-//		if (access) {
+//		if () {
 //			
 //		}
 //	}
-=======
-	public String Acl_check_packet(String ACLNAME, String SRC_IP,String DST_IP,String PROTO,String SRC_PORT,String DST_PORT){
-		List<AclEntity> entities=hashtable.get(ACLNAME);
-		if () {
-			
-		}
-	}
->>>>>>> a216ea795f2d0cfbf10f8e1d17b116d885c20404
 	public void Acl_del_rule(String ACLNAME,String PRIO){
 		if (hashtable.contains(ACLNAME)) {
 			List<AclEntity> entities = hashtable.get(ACLNAME);
