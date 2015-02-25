@@ -10,7 +10,9 @@ public class AclEntity {
 	private String priority;
 	private String action;
 	private boolean access;
-
+	public AclEntity() {
+		// TODO Auto-generated constructor stub
+	}
 	public AclEntity(String aclName, String src_ip, String dst_ip,
 			String protoco, String src_port, String dst_port, String priority,
 			String action) {
@@ -113,28 +115,30 @@ public class AclEntity {
 			}
 			else {
 				String subnet=ips[1];
-				int num=Integer.getInteger(subnet);
+				int num=Integer.parseInt(subnet);
 				if (num==32) {
 					return ips[0].equals(des);
 				}
 				if (num==24) {
-					String [] subips=ips[0].split(".");
-					String [] desips=des.split(".");
+					String [] subips=ips[0].split("\\.");
+					String [] desips=des.split("\\.");
 					for (int i = 0; i < desips.length-1; i++) {
 						if (!desips[i].equals(subips[i])) {
 							return false;
 						}
 					}
+					return true;
 				}
 				if (num==25) {
-					String [] subips=ips[0].split(".");
-					String [] desips=des.split(".");
-					for (int i = 0; i < desips.length-1; i++) {
+					String [] subips=ips[0].split("\\.");
+					String [] desips=des.split("\\.");
+					int i=0;
+					for (i = 0; i < desips.length-1; i++) {
 						if (!desips[i].equals(subips[i])) {
 							return false;
 						}
 					}
-					int subipnum=Integer.getInteger(desips[0]);
+					int subipnum=Integer.parseInt(desips[i]);
 					if (subipnum<=127) {
 						return true;
 					}
@@ -142,9 +146,6 @@ public class AclEntity {
 				return false;
 			}
 		}
-		
-		
 	}
-	
 
 }
