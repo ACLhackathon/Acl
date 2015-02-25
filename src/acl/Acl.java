@@ -90,16 +90,16 @@ public class Acl {
 	public void Acl_show_rules(String ACLNAME,String FILENAME) throws IOException{
 		
 		List<AclEntity> entities = hashtable.get(FILENAME);
+		File file = new File("out.txt");
+		BufferedWriter output = new BufferedWriter(new FileWriter(file));
 		for (AclEntity entity: entities) {
 			String str = entity.getAclName() + ", " + entity.getSrc_ip() + "," + entity.getDst_ip()
 					 + ", " + entity.getProtoco() + ", " +  entity.getSrc_port()  + ", " +  entity.getDst_port()
 						+ entity.getAction();
-			
-			File file = new File("out.txt");
-	        BufferedWriter output = new BufferedWriter(new FileWriter(file));
-	        output.write(str);
-	        output.close();
+
+			output.write(str);
 		}
+		output.close();
 	}
 	public void Acl_show_all (String FILENAME){
 		List<AclEntity> entities = hashtable.get(FILENAME);
